@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Venakars IoT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="auth-body">
+    <div class="auth-wrapper">
+        <div class="auth-card glass-panel" id="auth-card">
+            <!-- Login Form -->
+            <div class="auth-form login-form">
+                <div class="logo auth-logo">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Venakars</span>
+                </div>
+                <h2 style="color: var(--text-primary);">Selamat Datang Kembali</h2>
+                <p>Masuk ke dashboard IoT Anda</p>
+
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" placeholder="Alamat Email" id="login-email">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Kata Sandi" id="login-pw">
+                </div>
+
+                <button class="connect-btn auth-btn" onclick="window.location.href='index.html'">Masuk</button>
+
+                <p class="auth-switch">Belum punya akun? <a href="#" id="to-register">Daftar sekarang</a></p>
+            </div>
+
+            <!-- Register Form (Hidden by default) -->
+            <div class="auth-form register-form" style="display: none;">
+                <div class="logo auth-logo">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Venakars</span>
+                </div>
+                <h2 style="color: var(--text-primary);">Buat Akun Baru</h2>
+                <p>Daftar untuk kontrol perangkat Anda</p>
+
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" placeholder="Nama Lengkap">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" placeholder="Alamat Email">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Kata Sandi">
+                </div>
+
+                <button class="connect-btn auth-btn" onclick="window.location.href='index.html'">Daftar & Masuk</button>
+
+                <p class="auth-switch">Sudah punya akun? <a href="#" id="to-login">Masuk disini</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toRegister = document.getElementById('to-register');
+        const toLogin = document.getElementById('to-login');
+        const loginForm = document.querySelector('.login-form');
+        const registerForm = document.querySelector('.register-form');
+
+        toRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        });
+
+        toLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'block';
+        });
+    </script>
+</body>
+
+</html>

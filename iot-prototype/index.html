@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venakars IoT Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="logo">
+                <i class="fa-solid fa-microchip"></i>
+                <span>Venakars</span>
+            </div>
+
+            <nav class="menu">
+                <a href="#" class="active"><i class="fa-solid fa-border-all"></i> Dashboard</a>
+                <a href="#" id="btn-manual"><i class="fa-solid fa-book"></i> User Manual</a>
+                <a href="#" id="btn-dev"><i class="fa-solid fa-code"></i> Developer Info</a>
+                <a href="login.html" id="btn-logout" style="margin-top: auto; color: #ef4444;"><i
+                        class="fa-solid fa-arrow-right-from-bracket"></i> Keluar (Logout)</a>
+            </nav>
+
+            <div class="connection-status disconnected" id="conn-status">
+                <i class="fa-solid fa-circle-dot alert-icon"></i>
+                <span id="conn-text">Terputus</span>
+            </div>
+            <button class="connect-btn" id="btn-connect">Connect Device</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar glass-panel">
+                <div class="greeting">
+                    <h1>Dashboard Perangkat</h1>
+                    <p>Pantau perangkat IoT mu secara real-time</p>
+                </div>
+                <div class="top-widgets">
+                    <div class="time-widget glass-panel">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="realtime-clock">00:00:00</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="grid-layout">
+                <!-- Device Info Card -->
+                <div class="card glass-panel device-info">
+                    <h3><i class="fa-solid fa-bolt"></i> Informasi Device</h3>
+                    <div class="info-stats">
+                        <div class="stat-item">
+                            <i class="fa-solid fa-battery-three-quarters text-green"></i>
+                            <div class="stat-detail">
+                                <span class="label">Baterai</span>
+                                <span class="value" id="battery-val">78%</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-temperature-half text-orange"></i>
+                            <div class="stat-detail">
+                                <span class="label">Suhu</span>
+                                <span class="value" id="temp-val">34°C</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-signal text-blue"></i>
+                            <div class="stat-detail">
+                                <span class="label">Sinyal</span>
+                                <span class="value" id="signal-val">Kuat (4G)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Volume Control Card -->
+                <div class="card glass-panel volume-control">
+                    <h3><i class="fa-solid fa-volume-high"></i> Pengatur Volume</h3>
+                    <div class="slider-container">
+                        <i class="fa-solid fa-volume-off text-secondary"></i>
+                        <input type="range" min="0" max="100" value="50" class="slider" id="volume-slider">
+                        <i class="fa-solid fa-volume-up text-accent"></i>
+                    </div>
+                    <div class="volume-display">
+                        Tingkat Suara: <span id="volume-value">50</span>%
+                    </div>
+                </div>
+
+                <!-- Realtime GPS -->
+                <div class="card glass-panel map-card">
+                    <h3><i class="fa-solid fa-location-crosshairs text-accent"></i> Lokasi Real-time (GPS)</h3>
+                    <div id="map" class="map-container"></div>
+                </div>
+
+                <!-- Alarms -->
+                <div class="card glass-panel alarm-card">
+                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Pengaturan Alarm</h3>
+                    <div class="alarm-input">
+                        <input type="time" id="alarm-time">
+                        <button id="add-alarm-btn"><i class="fa-solid fa-plus"></i> Simpan</button>
+                    </div>
+                    <ul class="alarm-list" id="alarm-list">
+                        <!-- Alarms injected via JS -->
+                        <li><span><i class="fa-regular fa-clock"></i> &nbsp; 07:00</span><button class="del-btn"><i
+                                    class="fa-solid fa-trash"></i></button></li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="modal-manual">
+        <div class="modal-content glass-panel">
+            <span class="close-btn">&times;</span>
+            <h2 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-book-open"></i> User Manual</h2>
+            <div class="manual-content">
+                <p>1. <b>Koneksi:</b> Pastikan perangkat menyala, lalu klik tombol "Connect Device". Status akan berubah
+                    menjadi hijau jika berhasil.</p>
+                <p>2. <b>Volume:</b> Geser slider pada kartu pengatur volume untuk mengubah tingkat suara buzzer/speaker
+                    pada device.</p>
+                <p>3. <b>GPS Tracker:</b> Peta akan menyesuaikan titik koordinat device setiap 5 detik saat terhubung.
+                </p>
+                <p>4. <b>Alarm:</b> Anda dapat menjadwalkan notifikasi atau aksi pada device. Pilih waktu lalu klik
+                    "Simpan".</p>
+
+                <h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--text-primary);"><i
+                        class="fa-brands fa-youtube" style="color: #ff0000;"></i> Video Tutorial</h3>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-dev">
+        <div class="modal-content glass-panel">
+            <span class="close-btn">&times;</span>
+            <h2>💻 Informasi Developer</h2>
+            <div class="dev-profile">
+                <img src="https://ui-avatars.com/api/?name=Agus+Dev&background=0D8ABC&color=fff" alt="Dev"
+                    class="dev-avatar">
+                <div>
+                    <h3 style="color: var(--accent); margin-bottom: 0.5rem;">IoT Innovation Team</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 0.3rem;"><i class="fa-solid fa-envelope"></i>
+                        admin@nexiot-project.id</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 0.3rem;"><i class="fa-solid fa-phone"></i>
+                        +62 812-3456-7890</p>
+                    <p style="color: var(--text-secondary);"><i class="fa-solid fa-globe"></i> www.nexiot-project.id</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
